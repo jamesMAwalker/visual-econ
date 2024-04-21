@@ -22,10 +22,12 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={cn(inter.className, 'flex-col-c min-h-screen xl:h-screen')}
+        className={cn(inter.className, 'flex-col-sbc min-h-screen xl:h-screen')}
       >
         <Toolbar />
-        {children}
+        <div className='LAYOUT_INNER overflow-y-scroll xl:h-full w-[var(--layout-width)] flex-tl border-r border-l border-neutral-800'>
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

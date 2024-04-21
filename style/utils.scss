@@ -28,6 +28,18 @@
   align-items: center;
   justify-content: center;
 }
+.flex-col-tc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.flex-col-sbc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
 .flex-col-tl {
   display: flex;
   flex-direction: column;
