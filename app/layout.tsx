@@ -6,6 +6,7 @@ import { Toolbar } from "@/components/layout/toolbar";
 import { Footer } from "@/components/layout/footer";
 
 import "@/style/global.scss";
+import { ChartDataProvider } from "@/context/chart-params.context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,16 +21,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <body
-        className={cn(inter.className, 'flex-col-sbc min-h-screen xl:h-screen')}
-      >
-        <Toolbar />
-        <div className='LAYOUT_INNER overflow-y-scroll xl:h-full w-[var(--layout-width)] flex-tl border-r border-l border-neutral-800'>
-          {children}
-        </div>
-        <Footer />
-      </body>
-    </html>
+    <ChartDataProvider>
+      <html lang='en' className='dark'>
+        <body
+          className={cn(
+            inter.className,
+            'flex-col-sbc min-h-screen xl:h-screen'
+          )}
+        >
+          <Toolbar />
+          <div className='LAYOUT_INNER overflow-y-scroll xl:h-full w-[var(--layout-width)] flex-tl border-r border-l border-neutral-800'>
+            {children}
+          </div>
+          <Footer />
+        </body>
+      </html>
+    </ChartDataProvider>
   )
 }
