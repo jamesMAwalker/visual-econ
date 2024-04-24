@@ -6,8 +6,8 @@ import { GEOFIPS } from '@/data'
 import { STAT_TABLES } from '@/data'
 
 import { Button } from '@/shadcn/ui/button'
-import { Dropdown } from '@/shadcn/ui/dropdown'
 import { useChartInputState } from '@/context/chart-params.context'
+import { StateDropdown } from '@/components/inputs/state-dropdown'
 
 // TODO: Add dropdowns for table selection.
 
@@ -38,7 +38,7 @@ export default function Home() {
         </p>
       </div>
       <div className='DROPDOWN_CONTAINER flex-c gap-md'>
-        <Dropdown list={GEOFIPS} />
+        <StateDropdown list={GEOFIPS} />
         <Button onClick={handleSetUrlParams}>Compare →</Button>
       </div>
     </main>
