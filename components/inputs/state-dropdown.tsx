@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 
 import { cn } from '@/shadcn/utils'
@@ -14,35 +14,31 @@ import {
   CommandList
 } from '@/shadcn/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/shadcn/ui/popover'
-import { useRouter } from 'next/navigation'
-import { IGeoFipsItem } from '@/data'
-import { IStatTableItem } from '@/data/tables'
 import { useChartInputState } from '@/context/chart-params.context'
+import { IGeoFipsItem } from '@/data'
 
-/*
-  TODO: Next - Add real data
-*/
-
+// * Constants
 const MAX_ITEMS = 3
 
-export function Dropdown({ list }: { list: any }) {
-  const { push } = useRouter()
 
+export function StateDropdown({ list }: { list: IGeoFipsItem[] }) {
   const [open, setOpen] = useState(false)
   const [maxItemsReached, setMaxItemsReached] = useState(false)
-  const [selected, setSelected] = useState<any>([])
+  const [selected, setSelected] = useState<IGeoFipsItem[]>([])
 
   const { setStateParams } = useChartInputState()
-  
-  function handleDropdownItemClick(item: any) {
+
+  function handleDropdownItemClick(item: IGeoFipsItem) {
     setSelected((previousSelection: any) => {
-      let newSelection = previousSelection
+      let newSelection: IGeoFipsItem[] = previousSelection
       let maxItemsReached = previousSelection.length >= MAX_ITEMS
       const alreadySelected = previousSelection.includes(item)
-      
+
       if (alreadySelected) {
         // remove item from selection
-        newSelection = previousSelection.filter((i: any) => i.key !== item.key)
+        newSelection = previousSelection.filter(
+          (i: IGeoFipsItem) => i.key !== item.key
+        )
         maxItemsReached = false
       }
       if (!maxItemsReached && !alreadySelected) {
@@ -68,7 +64,7 @@ export function Dropdown({ list }: { list: any }) {
         >
           {selected.length > 0 ? (
             <div className='SELECTED flex-tl divide-dashed divide-x-[.5px] divide-color-white w-full'>
-              {selected.map((item: any) => {
+              {selected.map((item: IGeoFipsItem) => {
                 return (
                   <span key={item.code} className='px-2'>
                     {item.code}
@@ -77,7 +73,7 @@ export function Dropdown({ list }: { list: any }) {
               })}
             </div>
           ) : (
-            'Select a state...'
+            'Select state...'
           )}
           <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
@@ -88,7 +84,7 @@ export function Dropdown({ list }: { list: any }) {
           <CommandEmpty>No framework found.</CommandEmpty>
           <CommandList>
             <CommandGroup>
-              {list.map((item: any) => {
+              {list.map((item: IGeoFipsItem) => {
                 const isSelected = selected?.find(
                   (i: any) => i.key === item.key
                 )
