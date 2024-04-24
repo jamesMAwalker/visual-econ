@@ -1,12 +1,13 @@
 'use client'
 
+import { IGeoFipsItem, IStatTableItem } from '@/data'
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react'
 
 const ChartDataInputState = createContext<{
-  stateParams: any[]
-  setStateParams: (arg: any[]) => void
-  tableParams: any[]
-  setTableParams: (arg: any[]) => void
+  stateParams: IGeoFipsItem[]
+  setStateParams: (arg: IGeoFipsItem[]) => void
+  tableParams: IStatTableItem[]
+  setTableParams: (arg: IStatTableItem[]) => void
   dateParams: any[]
   setDateParams: (arg: any[]) => void
 } | null>(null)
@@ -23,9 +24,9 @@ export const useChartInputState = () => {
 }
 
 export const ChartDataProvider = ({ children }: { children: ReactNode }) => {
-  const [stateParams, setStateParams] = useState<any[]>([])
-  const [tableParams, setTableParams] = useState<any[]>([])
-  const [dateParams, setDateParams]   = useState<any[]>([])
+  const [stateParams, setStateParams] = useState<IGeoFipsItem[]>([])
+  const [tableParams, setTableParams] = useState<IStatTableItem[]>([])
+  const [dateParams, setDateParams] = useState<any[]>([])
 
   const chartContextValue = useMemo(
     () => ({
