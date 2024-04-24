@@ -1,7 +1,17 @@
+export interface IBeaSearchParams { [key: string]: string | string[] | undefined }
+
+export interface IBeaRequestParams {
+  stateRequestParams: { geoFips: string }[];
+  tableRequestParams: { tableName: string; lineCode: string }[]
+}
+
+
 export function convertParamsToRequest(
-  searchParams: Record<string, string | string[]>
-) {
+  searchParams: IBeaSearchParams
+): IBeaRequestParams {
   const { states, tables } = searchParams
+
+  if (!states || !tables) throw new Error('States and tables params are required')
 
   const stateRequestParams = Array.isArray(states)
     ? states.map((state: any) => ({
@@ -18,7 +28,7 @@ export function convertParamsToRequest(
     : (() => {
       const [tableName, lineCode] = tables.split('_')
 
-      return { tableName, lineCode }
+      return [{ tableName, lineCode }]
     })()
 
   return { stateRequestParams, tableRequestParams }
