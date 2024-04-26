@@ -11,6 +11,11 @@
   align-items: center;
   justify-content: center;
 }
+.flex-cl {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
 .flex-tl {
   display: flex;
   align-items: flex-start;
