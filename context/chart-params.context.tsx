@@ -10,6 +10,8 @@ const ChartDataInputState = createContext<{
   setTableParams: (arg: IStatTableItem[]) => void
   dateParams: any[]
   setDateParams: (arg: any[]) => void
+  currentChartId: string | null
+  setCurrentChartId: (arg: string) => void
 } | null>(null)
 
 export const useChartInputState = () => {
@@ -27,6 +29,7 @@ export const ChartDataProvider = ({ children }: { children: ReactNode }) => {
   const [stateParams, setStateParams] = useState<IGeoFipsItem[]>([])
   const [tableParams, setTableParams] = useState<IStatTableItem[]>([])
   const [dateParams, setDateParams] = useState<any[]>([])
+  const [currentChartId, setCurrentChartId] = useState<string | null>(null)
 
   const chartContextValue = useMemo(
     () => ({
@@ -35,9 +38,11 @@ export const ChartDataProvider = ({ children }: { children: ReactNode }) => {
       tableParams,
       setTableParams,
       dateParams,
-      setDateParams
+      setDateParams,
+      currentChartId,
+      setCurrentChartId
     }),
-    [stateParams, tableParams, dateParams]
+    [stateParams, tableParams, dateParams, currentChartId]
   )
 
   return (
