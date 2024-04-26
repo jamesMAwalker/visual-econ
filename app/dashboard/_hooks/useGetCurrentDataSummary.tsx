@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 
 import { CHART_DESCRIPTIONS, IDataDescription } from '@/data/descriptions'
 
-interface IChartSummaryInfo {
+export interface IChartSummaryInfo {
   currentData: IBeaApiResponse[]
   currentDescription: IDataDescription
 }
@@ -19,7 +19,7 @@ interface IChartSummaryInfo {
 export const useGetCurrentDataSummary = (
   data: IBeaApiResponse[][],
   currentChartId: string | null
-) => {
+): IChartSummaryInfo | null => {
   const [chartSummary, setChartSummary] = useState<IChartSummaryInfo | null>(
     null
   )
