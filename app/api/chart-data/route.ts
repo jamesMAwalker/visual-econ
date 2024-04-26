@@ -4,11 +4,9 @@ const beaKey = process.env.BEA_API_KEY
 
 
 export async function POST(req: Request) {
-  const { tableName, lineCode, geoFips } = await req.json()
+  const { tableName, lineCode, geoFips, years } = await req.json()
   
-  const Year = 'LAST10'
-  
-  const URL = `https://apps.bea.gov/api/data/?&UserID=${beaKey}&method=GetData&datasetname=Regional&TableName=${tableName}&LineCode=${lineCode}&GeoFIPS=${geoFips}&Year=${Year}&ResultFormat=JSON`;
+  const URL = `https://apps.bea.gov/api/data/?&UserID=${beaKey}&method=GetData&datasetname=Regional&TableName=${tableName}&LineCode=${lineCode}&GeoFIPS=${geoFips}&Year=${years}&ResultFormat=JSON`;
 
   try {
     const res = await fetch(URL)
