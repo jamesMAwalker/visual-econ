@@ -39,7 +39,7 @@ export const LineChart = ({ dataSets, scale }: ILineChartProps) => {
       return {
         label: set?.StateName,
         data: set?.Data?.sort((a: IBeaDataItem, b: IBeaDataItem) => {
-          return a.DataValue > b.DataValue
+          return Number(a.DataValue) - Number(b.DataValue)
         })?.map((d: any) => Number(d.DataValue) / 1_000_000_000),
         borderColor: lineColor,
         backgroundColor: 'white'
