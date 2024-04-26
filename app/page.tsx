@@ -9,7 +9,6 @@ import { Button } from '@/shadcn/ui/button'
 import { useChartInputState } from '@/context/chart-params.context'
 import { StateDropdown } from '@/components/inputs/state-dropdown'
 
-// TODO: Add dropdowns for table selection.
 
 export default function Home() {
   const { push } = useRouter()
