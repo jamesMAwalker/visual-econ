@@ -1,4 +1,4 @@
-interface IDataDescription {
+export interface IDataDescription {
   title: string
   subTitle: string
   description: string
