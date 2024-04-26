@@ -3,11 +3,8 @@ import { Settings2 } from 'lucide-react'
 
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
-  SheetHeader,
   SheetTitle,
   SheetTrigger
 } from '@/shadcn/ui/sheet'
