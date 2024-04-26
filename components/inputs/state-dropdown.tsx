@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 
 import { cn } from '@/shadcn/utils'
@@ -20,13 +20,18 @@ import { IGeoFipsItem } from '@/data'
 // * Constants
 const MAX_ITEMS = 3
 
+// TODO: Get initial value form url params.
 
 export function StateDropdown({ list }: { list: IGeoFipsItem[] }) {
   const [open, setOpen] = useState(false)
   const [maxItemsReached, setMaxItemsReached] = useState(false)
   const [selected, setSelected] = useState<IGeoFipsItem[]>([])
 
-  const { setStateParams } = useChartInputState()
+  const { setStateParams, stateParams } = useChartInputState()
+
+  useEffect(() => {
+    setSelected(stateParams)
+  }, [stateParams])
 
   function handleDropdownItemClick(item: IGeoFipsItem) {
     setSelected((previousSelection: any) => {
@@ -60,13 +65,13 @@ export function StateDropdown({ list }: { list: IGeoFipsItem[] }) {
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-[200px] justify-between'
+          className='w-[200px] justify-between font-normal text-muted-foreground'
         >
           {selected.length > 0 ? (
-            <div className='SELECTED flex-tl divide-dashed divide-x-[.5px] divide-color-white w-full'>
+            <div className='SELECTED flex-tl divide-dashed divide-x-[.5px] text-primary !font-bold divide-color-white w-full'>
               {selected.map((item: IGeoFipsItem) => {
                 return (
-                  <span key={item.code} className='px-2'>
+                  <span key={item.key} className='px-2'>
                     {item.code}
                   </span>
                 )
@@ -80,8 +85,8 @@ export function StateDropdown({ list }: { list: IGeoFipsItem[] }) {
       </PopoverTrigger>
       <PopoverContent className='POPOVER_CONTENT w-[200px] max-h-[200px] overflow-y-scroll p-0'>
         <Command>
-          <CommandInput placeholder='Search framework...' />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandInput placeholder='Search state...' />
+          <CommandEmpty>No states found.</CommandEmpty>
           <CommandList>
             <CommandGroup>
               {list.map((item: IGeoFipsItem) => {
