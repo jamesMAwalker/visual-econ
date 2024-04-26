@@ -11,10 +11,11 @@ const config = {
 	],
   prefix: "",
   theme: {
-    container: {
-      screens: {
-        "2xl": "1400px",
-      },
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      "lg": "1200px",
+      "2xl": "1400px",
     },
     extend: {
       spacing: {
@@ -25,7 +26,8 @@ const config = {
         ml: '40px',
         lg: '50px',
         xl: '75px',
-        xxl: '100px'
+        xxl: '100px',
+        layout: 'var(--layout-padding)' // lg+: 50px | md-: 25px
       },
       colors: {
         border: "hsl(var(--border))",
