@@ -1,21 +1,26 @@
-import { IBeaRequestParams } from "@/lib/convert-params-to-request"
 
-interface ITableAndStateParams {
-  tableName: string;
-  lineCode: string;
-  geoFips: string;
+import { IBeaSearchParams, convertParamsToRequest } from "@/lib/convert-params-to-request"
+
+interface IAllRequestParams {
+  tableName: string
+  lineCode: string
+  geoFips: string
+  dates: string
 }
 
-export async function fetchChartData(params: IBeaRequestParams): Promise<(IBeaApiResponse | undefined)[][]> {
-  const { stateRequestParams, tableRequestParams } = params
 
-  const tableAndStateParams: ITableAndStateParams[][] = tableRequestParams.map((table: any) => {
+export async function fetchChartData(params: IBeaSearchParams): Promise<(IBeaApiResponse | undefined)[][]> {
+  const { stateRequestParams, tableRequestParams, dateRequestParams } = convertParamsToRequest(params as IBeaSearchParams);
+
+  const allRequestParams: IAllRequestParams[][] = tableRequestParams.map((table: any) => {
     return stateRequestParams.map((state: any) => {
-      return { ...table, ...state }
+      const allParams = { ...table, ...state, ...dateRequestParams }
+      
+      return allParams;
     })
   })
 
-  const results = await Promise.all(tableAndStateParams.map(async (table) => {
+  const results = await Promise.all(allRequestParams.map(async (table) => {
     return await Promise.all(table.map(async (state) => {
       return fetchData(state)
     }))
@@ -24,7 +29,7 @@ export async function fetchChartData(params: IBeaRequestParams): Promise<(IBeaAp
   return results;
 }
 
-async function fetchData(requestParams: ITableAndStateParams): Promise<IBeaApiResponse | undefined> {
+async function fetchData(requestParams: IAllRequestParams): Promise<IBeaApiResponse | undefined> {
   try {
     const res = await fetch('/api/chart-data', {
       method: 'POST',
