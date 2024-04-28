@@ -18,7 +18,7 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="full col-span-2 flex-col-c gap-md">
+    <div className="full row-span-2 col-span-2 flex-col-c gap-md">
       <h2 className="text-xl font-bold">No chart data loaded!</h2>
       <p>Please reload the page to try again.</p>
       <Button
