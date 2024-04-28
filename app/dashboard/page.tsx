@@ -23,13 +23,14 @@ const Dashboard = ({ searchParams }: PageProps) => {
     () => fetchChartData(searchParams)
   )
 
-  if (error) throw new Error('No chart data loaded!')
+  if (error) {
+    throw new Error('No chart data loaded!')
+  }
 
   if (isLoading || !data || data?.length === 0) {
     return (
       <>
         <ChartsList.Skeleton />
-        <ChartsSummary.Skeleton />
       </>
     )
   }
