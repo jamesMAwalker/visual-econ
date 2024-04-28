@@ -1,12 +1,13 @@
 'use client'
 
 import { MouseEventHandler, ReactNode } from 'react'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import { Settings2 } from 'lucide-react'
 import Link from 'next/link'
 
-import { GEOFIPS, STAT_TABLES } from '@/data'
+import { GEOFIPS } from '@/data'
 
-import { useChartInputState } from '@/context/chart-params.context'
+import { useSetUrlParams } from '@/app/dashboard/_hooks/useSetUrlParams'
 
 import { Button } from '@/shadcn/ui/button'
 import {
@@ -19,45 +20,28 @@ import {
 
 import { StateDropdown } from '@/components/inputs/state-dropdown'
 import { DateDropdown } from '@/components/inputs/date-dropdown'
-import { useGetInitialStateFromParams } from '@/app/dashboard/_hooks/useGetInitialStateFromParams'
-import { Settings2 } from 'lucide-react'
+
 
 export const Toolbar = () => {
   const path = usePathname()
-  const router = useRouter()
 
-  const { stateParams, dateParams } = useChartInputState()
-
-  useGetInitialStateFromParams()
-
-  function handleSetUrlParams() {
-    const urlDateParams = dateParams
-      .map((date) => `${date.value}`)
-      .join('&dates=')
-    const urlTableParams = STAT_TABLES.map(
-      (table) => `${table.TableName}_${table.LineCode}`
-    ).join('&tables=')
-    const urlStateParams = stateParams
-      .map((item) => `${item.key}`)
-      .join('&states=')
-    const url = `/dashboard?states=${urlStateParams}&tables=${urlTableParams}&dates=${urlDateParams}`
-
-    router.push(url)
-    router.refresh()
-  }
+  const { handleSetUrlParams } = useSetUrlParams()
 
   return (
     <div className='TOOLBAR justify-between border-neutral-800 z-50 flex items-start w-full gap-lg p-layout border-b h-min'>
-      <Link href='/'>
-        <h1 className='LOGO text-2xl font-bold'>Visual Economy</h1>
+      <Link
+        className='LOGO py-xs px-sm border-l border-zinc-500 lg:border-transparent lg:p-0 h-[unset] text-2xl font-bold'
+        href='/'
+      >
+        Visual Economy
       </Link>
       {path === '/dashboard' && (
         <>
           <div className='DESKTOP_TOOLS hidden lg:flex lg:items-center lg:justify-end w-min gap-4'>
-            <Toolbar.Tools handler={handleSetUrlParams}/>
+            <Toolbar.Tools handler={handleSetUrlParams} />
           </div>
           <Toolbar.Mobile>
-            <Toolbar.Tools handler={handleSetUrlParams}/>
+            <Toolbar.Tools handler={handleSetUrlParams} />
           </Toolbar.Mobile>
         </>
       )}
@@ -107,4 +91,3 @@ Toolbar.Tools = function Tools({
     </>
   )
 }
-
