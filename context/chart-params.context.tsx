@@ -1,7 +1,16 @@
 'use client'
 
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useMemo,
+  useState
+} from 'react'
+
+import { IDateDropdownItem, QUICK_SELECT_DATES } from '@/data/dates'
 import { IGeoFipsItem, IStatTableItem } from '@/data'
-import { ReactNode, createContext, useContext, useMemo, useState } from 'react'
+
 
 const ChartDataInputState = createContext<{
   stateParams: IGeoFipsItem[]
@@ -28,7 +37,9 @@ export const useChartInputState = () => {
 export const ChartDataProvider = ({ children }: { children: ReactNode }) => {
   const [stateParams, setStateParams] = useState<IGeoFipsItem[]>([])
   const [tableParams, setTableParams] = useState<IStatTableItem[]>([])
-  const [dateParams, setDateParams] = useState<any[]>([])
+  const [dateParams, setDateParams] = useState<IDateDropdownItem[]>([
+    QUICK_SELECT_DATES[1]
+  ])
   const [currentChartId, setCurrentChartId] = useState<string | null>(null)
 
   const chartContextValue = useMemo(
