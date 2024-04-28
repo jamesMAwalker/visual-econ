@@ -1,9 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 
+import { IGeoFipsItem } from '@/data'
+
+import { useChartInputState } from '@/context/chart-params.context'
+import {
+  STATE_KEYS,
+  useGetInitialStateFromParams
+} from '@/app/dashboard/_hooks/useGetInitialStateFromParams'
+
 import { cn } from '@/shadcn/utils'
+
 import { Button } from '@/shadcn/ui/button'
 import {
   Command,
@@ -14,8 +23,6 @@ import {
   CommandList
 } from '@/shadcn/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/shadcn/ui/popover'
-import { useChartInputState } from '@/context/chart-params.context'
-import { IGeoFipsItem } from '@/data'
 
 // * Constants
 const MAX_ITEMS = 3
@@ -29,9 +36,10 @@ export function StateDropdown({ list }: { list: IGeoFipsItem[] }) {
 
   const { setStateParams, stateParams } = useChartInputState()
 
-  useEffect(() => {
-    setSelected(stateParams)
-  }, [stateParams])
+  useGetInitialStateFromParams({
+    stateKey: STATE_KEYS.state,
+    componentStateSetter: setSelected
+  })
 
   function handleDropdownItemClick(item: IGeoFipsItem) {
     setSelected((previousSelection: any) => {
