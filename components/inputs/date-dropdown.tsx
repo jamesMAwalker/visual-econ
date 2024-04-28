@@ -1,9 +1,22 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 
+import {
+  IDateDropdownItem,
+  QUICK_SELECT_DATES,
+  RANGE_SELECT_DATES
+} from '@/data/dates'
+
+import { useChartInputState } from '@/context/chart-params.context'
+import {
+  STATE_KEYS,
+  useGetInitialStateFromParams
+} from '@/app/dashboard/_hooks/useGetInitialStateFromParams'
+
 import { cn } from '@/shadcn/utils'
+
 import { Button } from '@/shadcn/ui/button'
 import {
   Command,
@@ -14,17 +27,10 @@ import {
   CommandSeparator
 } from '@/shadcn/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/shadcn/ui/popover'
-import { useChartInputState } from '@/context/chart-params.context'
-import {
-  IDateDropdownItem,
-  QUICK_SELECT_DATES,
-  RANGE_SELECT_DATES
-} from '@/data/dates'
 
 // * Constants
 const MAX_ITEMS = 2
 
-// TODO: Get initial value form url params.
 
 export function DateDropdown() {
   const [open, setOpen] = useState(false)
@@ -33,10 +39,10 @@ export function DateDropdown() {
 
   const { setDateParams, dateParams } = useChartInputState()
 
-  useEffect(() => {
-    setSelected(dateParams)
-    console.log('dateParams changed: ', dateParams)
-  }, [dateParams])
+  useGetInitialStateFromParams({
+    stateKey: STATE_KEYS.date,
+    componentStateSetter: setSelected
+  })
 
   function handleDropdownItemClick(item: IDateDropdownItem) {
     setSelected((previousSelection: any) => {
@@ -88,15 +94,11 @@ export function DateDropdown() {
         >
           {selected.length > 0 ? (
             <div className='SELECTED flex-cl gap-[1px] text-primary !font-bold w-full'>
-              <span className='px-2'>
-                {selected[0].display}
-              </span>
+              <span className='px-2'>{selected[0].display}</span>
               {selected[1] && (
                 <>
                   <span>-</span>
-                  <span className='px-2'>
-                    {selected[1].display}
-                  </span>
+                  <span className='px-2'>{selected[1].display}</span>
                 </>
               )}
             </div>

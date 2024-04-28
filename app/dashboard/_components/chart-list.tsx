@@ -1,17 +1,18 @@
 'use client'
 
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { Skeleton } from '@/shadcn/ui/skeleton'
-import { cn } from '@/shadcn/utils'
-import { LineChart } from '@/components/charts/line';
-import { useEffect } from 'react';
 import { useChartInputState } from '@/context/chart-params.context';
+import { cn } from '@/shadcn/utils'
+
+import { Skeleton } from '@/shadcn/ui/skeleton'
+import { LineChart } from '@/components/charts/line';
 
 
 export function ChartsList({ data }: { data: IBeaApiResponse[][] }) {
   return (
-    <section className='CHARTS_LIST full flex-col-tl gap-lg pt-lg overflow-y-scroll p-lg lg:pb-[30vh]'>
+    <section className='CHARTS_LIST md:px-xl lg:full flex-col-tl p-layout sm:gap-xl gap-layout overflow-y-scroll pb-[20vh] lg:pb-[30vh]'>
       {data?.map((dataSets: any[]) => {
         return <ChartItem key={dataSets[0].Statistic} dataSets={dataSets} />
       })}
@@ -21,13 +22,10 @@ export function ChartsList({ data }: { data: IBeaApiResponse[][] }) {
 
 ChartsList.Skeleton = function ListSkeleton() {
   return (
-    <section className='CHARTS_LIST_SKELETON full flex-col-tl gap-lg pt-lg overflow-y-scroll p-lg lg:pb-[30vh]'>
+    <section className='CHARTS_LIST_SKELETON md:px-xl lg:full flex-col-tl p-layout sm:gap-xl gap-layout overflow-y-scroll pb-[20vh] lg:pb-[30vh]'>
       {[1, 2, 3, 4].map((item) => {
         return (
-          <Skeleton
-            className=' aspect-video flex-shrink-0 w-full'
-            key={item}
-          />
+          <Skeleton className=' aspect-video flex-shrink-0 w-full' key={item} />
         )
       })}
     </section>
@@ -37,13 +35,13 @@ ChartsList.Skeleton = function ListSkeleton() {
 const ChartItem = ({ dataSets }: { dataSets: any[] }) => {
   const { setCurrentChartId } = useChartInputState()
   const { inView, ref } = useInView({ threshold: 1 })
-  const [ chartData ] = dataSets;
-  
+  const [chartData] = dataSets
+
   useEffect(() => {
     if (inView) {
-      setCurrentChartId(chartData.TableName);
+      setCurrentChartId(chartData.TableName)
     }
-  }, [inView])
+  }, [inView, chartData.TableName]) // eslint-disable react-hooks/exhaustive-deps
 
   return (
     <span

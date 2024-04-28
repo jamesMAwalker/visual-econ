@@ -22,15 +22,15 @@ export default function RootLayout({
 }>) {
   return (
     <ChartDataProvider>
-      <html lang='en' className='dark'>
+      <html lang='en' className='HTML dark'>
         <body
           className={cn(
             inter.className,
-            'flex-col-sbc min-h-screen xl:h-screen'
+            'BODY flex-col-sbc min-h-screen h-screen'
           )}
         >
           <Toolbar />
-          <div className='LAYOUT_INNER overflow-y-scroll xl:h-full w-[var(--layout-width)] flex-tl border-r border-l border-neutral-800'>
+          <div className='LAYOUT_INNER overflow-y-hidden h-full w-[var(--layout-width)] flex-tl border-r border-l border-neutral-800'>
             {children}
           </div>
           <Footer />

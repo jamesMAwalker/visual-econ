@@ -1,5 +1,16 @@
+/**
+ * * fetchChartData
+ * Fetches chart data from the route handler using search parameters.
+ *
+ * @param params - The search parameters to use for fetching the chart data.
+ * @returns An array of arrays, where each inner array represents the chart 
+ * data for all selected states applied to each chart type.
+ */
 
-import { IBeaSearchParams, convertParamsToRequest } from "@/lib/convert-params-to-request"
+import {
+  IBeaSearchParams,
+  convertParamsToRequest
+} from '@/lib/convert-params-to-request'
 
 interface IAllRequestParams {
   tableName: string
@@ -8,28 +19,38 @@ interface IAllRequestParams {
   dates: string
 }
 
+export async function fetchChartData(
+  params: IBeaSearchParams
+): Promise<(IBeaApiResponse | undefined)[][]> {
+  const { stateRequestParams, tableRequestParams, dateRequestParams } =
+    convertParamsToRequest(params as IBeaSearchParams)
 
-export async function fetchChartData(params: IBeaSearchParams): Promise<(IBeaApiResponse | undefined)[][]> {
-  const { stateRequestParams, tableRequestParams, dateRequestParams } = convertParamsToRequest(params as IBeaSearchParams);
+  const allRequestParams: IAllRequestParams[][] = tableRequestParams.map(
+    (table: any) => {
+      return stateRequestParams.map((state: any) => {
+        const allParams = { ...table, ...state, ...dateRequestParams }
 
-  const allRequestParams: IAllRequestParams[][] = tableRequestParams.map((table: any) => {
-    return stateRequestParams.map((state: any) => {
-      const allParams = { ...table, ...state, ...dateRequestParams }
-      
-      return allParams;
+        return allParams
+      })
+    }
+  )
+
+  const results = await Promise.all(
+    allRequestParams.map(async (table) => {
+      return await Promise.all(
+        table.map(async (state) => {
+          return fetchData(state)
+        })
+      )
     })
-  })
+  )
 
-  const results = await Promise.all(allRequestParams.map(async (table) => {
-    return await Promise.all(table.map(async (state) => {
-      return fetchData(state)
-    }))
-  }))
-
-  return results;
+  return results
 }
 
-async function fetchData(requestParams: IAllRequestParams): Promise<IBeaApiResponse | undefined> {
+async function fetchData(
+  requestParams: IAllRequestParams
+): Promise<IBeaApiResponse | undefined> {
   try {
     const res = await fetch('/api/chart-data', {
       method: 'POST',
@@ -53,4 +74,4 @@ async function fetchData(requestParams: IAllRequestParams): Promise<IBeaApiRespo
   } catch (error: Error | any) {
     throw new Error(error.message)
   }
-} 
+}

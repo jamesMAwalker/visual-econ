@@ -3,25 +3,22 @@
 import { useRouter } from 'next/navigation'
 
 import { GEOFIPS } from '@/data'
-import { STAT_TABLES } from '@/data'
 
-import { Button } from '@/shadcn/ui/button'
 import { useChartInputState } from '@/context/chart-params.context'
+import { useGetInitialStateFromParams } from './dashboard/_hooks/useGetInitialStateFromParams'
+import { useSetUrlParams } from './dashboard/_hooks/useSetUrlParams'
+
 import { StateDropdown } from '@/components/inputs/state-dropdown'
+import { Button } from '@/shadcn/ui/button'
 
 
 export default function Home() {
   const { push } = useRouter()
 
   const { stateParams } = useChartInputState()
+  const { handleSetUrlParams } = useSetUrlParams()
 
-  function handleSetUrlParams() {
-    const urlTableParams = STAT_TABLES.map(table => `${table.TableName}_${table.LineCode}`).join('&tables=')
-    const urlStateParams =  stateParams.map(item => `${item.key}`).join('&states=')
-    const url = `/dashboard?states=${urlStateParams}&tables=${urlTableParams}`
-
-    push(url)
-  }
+  useGetInitialStateFromParams()
 
   return (
     <main className='START_PAGE full flex-col-c gap-md'>
@@ -38,7 +35,9 @@ export default function Home() {
       </div>
       <div className='DROPDOWN_CONTAINER flex-c gap-md'>
         <StateDropdown list={GEOFIPS} />
-        <Button onClick={handleSetUrlParams}>Compare →</Button>
+        <Button onClick={handleSetUrlParams} disabled={stateParams.length <= 0}>
+          View Data →
+        </Button>
       </div>
     </main>
   )
