@@ -2,6 +2,7 @@
 
 import {
   ReactNode,
+  Suspense,
   createContext,
   useContext,
   useMemo,
@@ -10,6 +11,8 @@ import {
 
 import { IDateDropdownItem, QUICK_SELECT_DATES } from '@/data/dates'
 import { IGeoFipsItem, IStatTableItem } from '@/data'
+
+import Loading from '@/app/loading'
 
 
 const ChartDataInputState = createContext<{
@@ -58,7 +61,7 @@ export const ChartDataProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <ChartDataInputState.Provider value={{ ...chartContextValue }}>
-      {children}
+      <Suspense fallback={<Loading />}>{children}</Suspense>
     </ChartDataInputState.Provider>
   )
 }
