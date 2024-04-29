@@ -1,7 +1,6 @@
 'use client'
 
 import useSWR from 'swr'
-import { PageProps } from '@/.next/types/app/dashboard/page'
 
 import { useChartInputState } from '@/context/chart-params.context'
 
@@ -9,16 +8,12 @@ import { fetchChartData } from './_actions/fetch-chart-data'
 
 import { ChartsList } from './_components/chart-list'
 import { ChartsSummary } from './_components/chart-summary'
-
+import { PageProps } from '@/.next/types/app/page'
 
 const Dashboard = ({ searchParams }: PageProps) => {
   const { stateParams } = useChartInputState()
 
-  const {
-    error,
-    data,
-    isLoading,
-  } = useSWR(
+  const { error, data, isLoading } = useSWR(
     stateParams ? searchParams : null,
     () => fetchChartData(searchParams)
   )
@@ -35,7 +30,7 @@ const Dashboard = ({ searchParams }: PageProps) => {
     )
   }
 
-  const assertedData = data as IBeaApiResponse[][];
+  const assertedData = data as IBeaApiResponse[][]
 
   return (
     <>

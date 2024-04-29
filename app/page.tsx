@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import { GEOFIPS } from '@/data'
 
 import { useChartInputState } from '@/context/chart-params.context'
@@ -11,9 +9,7 @@ import { useSetUrlParams } from './dashboard/_hooks/useSetUrlParams'
 import { StateDropdown } from '@/components/inputs/state-dropdown'
 import { Button } from '@/shadcn/ui/button'
 
-
 export default function Home() {
-  const { push } = useRouter()
 
   const { stateParams } = useChartInputState()
   const { handleSetUrlParams } = useSetUrlParams()
